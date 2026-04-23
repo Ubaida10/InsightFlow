@@ -1,2 +1,8 @@
-<button (click) = testConnection()>Test Connection</button>
-<p *ngIf="serverMessage()">{{serverMessage()}}</p>
+<input type="file" accept=".pdf, image/*" (change)="onFileSelected($event)" />
+<div *ngIf="selectedFileName()">
+  <p><strong>Selected File:</strong> {{ selectedFileName() }}</p>
+</div>
+<button (click)="onUpload()" [disabled]="!selectedFile()">Upload</button>
+<div *ngIf="responseMessage()">
+  <p><strong>Response:</strong> {{ responseMessage() }}</p>
+</div>
