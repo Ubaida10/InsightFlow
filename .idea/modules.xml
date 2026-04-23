@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/InsightFlow.iml" filepath="$PROJECT_DIR$/InsightFlow.iml" />
+      <module fileurl="file://$PROJECT_DIR$/insight-flow-client/insight-flow-client.iml" filepath="$PROJECT_DIR$/insight-flow-client/insight-flow-client.iml" />
+    </modules>
+  </component>
+</project>
