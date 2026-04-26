@@ -1,12 +1,36 @@
-package com.example.insightflowserver;
+package com.example.insightflowserver.constants;
 
+/**
+ * Constants class containing AI prompts and templates.
+ *
+ * This class holds predefined prompt templates used for interacting
+ * with AI services, specifically Google Gemini for medical document
+ * processing and data extraction.
+ *
+ * @author Muhammad Abu Ubaida Aljerah
+ */
 public class PromptConstants {
+
+    /**
+     * AI prompt template for extracting structured data from lab reports.
+     *
+     * This prompt instructs Google Gemini AI to analyze medical lab reports
+     * (PDFs or images) and extract structured data including patient information
+     * and test results. The prompt specifies exact JSON output format and
+     * validation rules to ensure consistent, parseable responses.
+     *
+     * Key extraction requirements:
+     * - Patient name and report date
+     * - All laboratory test results with values, units, reference ranges
+     * - Status interpretation (normal/high/low) based on reference ranges
+     * - Strict JSON format without markdown formatting
+     */
     public static final String LAB_REPORT_PROMPT = """
             You are a medical data extraction AI.
             Analyze this lab report image or PDF and extract all test results.
-            
+
             Return ONLY a valid JSON object — no markdown, no backticks, no explanation.
-            
+
             Use exactly this structure:
             {
                "patientName": "string or null",
@@ -21,7 +45,7 @@ public class PromptConstants {
                }
                ]
             }
-            
+
             Rules:
                - value must always be a number, never a string
                - If a field is missing from the report, use null
