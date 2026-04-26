@@ -1,5 +1,10 @@
 package com.example.insightflowserver.service;
 
+import com.example.insightflowserver.PromptConstants;
+import com.example.insightflowserver.model.LabReport;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.genai.Client;
 import com.google.genai.types.Content;
 import com.google.genai.types.GenerateContentResponse;
@@ -14,19 +19,14 @@ import java.io.IOException;
 
 @Service
 @Slf4j
-public class OcrService {
+public class LabReportService {
 
     @Value("${gemini.api-key}")
     private String apiKey;
 
     private static final String MODEL = "gemini-2.5-flash";
-    private static final String OCR_PROMPT = """
-            Extract all text from this medical lab report exactly as it appears.
-            Preserve all values, units, reference ranges, and section headers.
-            Return only the extracted text — no commentary, no formatting.
-            """;
 
-    public String extractText(MultipartFile file) throws IOException {
+    public LabReport extractStructureReport(MultipartFile file) throws IOException {
         String mimeType = resolveMimeType(file);
         byte[] fileBytes = file.getBytes();
 
@@ -34,14 +34,38 @@ public class OcrService {
         
         Content content = Content.fromParts(
                 Part.fromBytes(fileBytes, mimeType),
-                Part.fromText(OCR_PROMPT)
+                Part.fromText(PromptConstants.LAB_REPORT_PROMPT)
         );
 
         GenerateContentResponse response = client.models.generateContent(MODEL, content, null);
+        String rawJson = response.text();
 
-        String extracted = response.text();
-        log.info("Gemini extracted {} characters from {}", extracted.length(), file.getOriginalFilename());
-        return extracted;
+        log.info("Raw Gemini response:\n{}", rawJson);
+
+        return parseLabReport(rawJson);
+    }
+
+    private LabReport parseLabReport(String rawJson) {
+        try {
+            // Strip markdown fences if Gemini wraps in ```json ... ``` despite instructions
+            String cleanedJson = rawJson
+                    .replaceAll("(?s)```json\\s*", "")
+                    .replace("```", "")
+                    .trim();
+
+            ObjectMapper mapper = new ObjectMapper();
+            LabReport labReport = mapper.readValue(cleanedJson, LabReport.class);
+
+            labReport.getResults().forEach(r ->
+                    log.info("  {} : {} {} [{}] → {}",
+                            r.getTest(), r.getValue(), r.getUnit(),
+                            r.getReferenceRange(), r.getStatus())
+            );
+
+            return labReport;
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private String resolveMimeType(MultipartFile file) {
