@@ -1,0 +1,44 @@
+[
+  {
+    "term": "Bilirubin",
+    "definition": "A yellow pigment produced when the liver breaks down old red blood cells. High levels can cause jaundice (yellowing of skin/eyes).",
+    "normalRange": "0.1 - 1.2 mg/dL",
+    "category": "Liver"
+  },
+  {
+    "term": "Glucose",
+    "definition": "Blood sugar — your body's main energy source. High fasting levels may indicate diabetes or pre-diabetes.",
+    "normalRange": "70 - 100 mg/dL (fasting)",
+    "category": "Metabolic"
+  },
+  {
+    "term": "Creatinine",
+    "definition": "A waste product filtered by your kidneys. Elevated levels suggest your kidneys may not be filtering properly.",
+    "normalRange": "0.6 - 1.2 mg/dL",
+    "category": "Kidney"
+  },
+  {
+    "term": "Hemoglobin",
+    "definition": "The protein in red blood cells that carries oxygen throughout your body. Low levels indicate anemia.",
+    "normalRange": "13.5 - 17.5 g/dL (men), 12.0 - 15.5 g/dL (women)",
+    "category": "Blood"
+  },
+  {
+    "term": "HbA1c",
+    "definition": "A 3-month average of your blood sugar levels. Used to diagnose and monitor diabetes.",
+    "normalRange": "Below 5.7%",
+    "category": "Metabolic"
+  },
+  {
+    "term": "ALT",
+    "definition": "Alanine aminotransferase — a liver enzyme. Elevated levels indicate liver inflammation or damage.",
+    "normalRange": "7 - 56 U/L",
+    "category": "Liver"
+  },
+  {
+    "term": "TSH",
+    "definition": "Thyroid Stimulating Hormone — controls how much thyroid hormone your body makes. Abnormal levels indicate thyroid issues.",
+    "normalRange": "0.4 - 4.0 mIU/L",
+    "category": "Thyroid"
+  }
+]

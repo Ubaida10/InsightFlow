@@ -2,7 +2,6 @@ package com.example.insightflowserver.config;
 
 import com.mongodb.ConnectionString;
 import com.mongodb.MongoClientSettings;
-import com.mongodb.MongoCredential;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import org.springframework.beans.factory.annotation.Value;
@@ -32,9 +31,9 @@ public class MongoDBConfig {
     /**
      * Creates and configures a MongoDB client for Atlas connection.
      *
-     * This method sets up the MongoDB client with explicit credentials for the
-     * InsightFlow database and configures server monitoring settings to prevent
-     * unauthorized access to system databases.
+     * This method sets up the MongoDB client using the connection string
+     * from application properties, which includes all necessary authentication
+     * and connection details for MongoDB Atlas.
      *
      * @return configured MongoClient instance for MongoDB Atlas
      */
@@ -42,13 +41,8 @@ public class MongoDBConfig {
     public MongoClient mongoClient() {
         ConnectionString connectionString = new ConnectionString(mongoUri);
 
-        // Create credential for specific database only
-        MongoCredential credential = MongoCredential.createCredential(
-            "Ubaida", "InsightFlow", "GCu-2021".toCharArray());
-
         MongoClientSettings settings = MongoClientSettings.builder()
             .applyConnectionString(connectionString)
-            .credential(credential)
             .applyToServerSettings(builder ->
                 builder.heartbeatFrequency(60, TimeUnit.SECONDS)
                     .minHeartbeatFrequency(30, TimeUnit.SECONDS))

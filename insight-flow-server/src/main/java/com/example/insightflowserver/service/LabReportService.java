@@ -67,9 +67,14 @@ public class LabReportService {
         report.setUploadedAt(LocalDateTime.now());
 
         // 3. Persist to MongoDB
-        LabReport reportSaved = labReportRepository.save(report);
-        log.info("Persisted lab report with id: {}", reportSaved.getId());
-        return reportSaved;
+        try {
+            LabReport reportSaved = labReportRepository.save(report);
+            log.info("Persisted lab report with id: {}", reportSaved.getId());
+            return reportSaved;
+        } catch(Exception e) {
+            throw e;
+        }
+
     }
 
     /**
