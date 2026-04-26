@@ -1,8 +1,13 @@
 <input type="file" accept=".pdf, image/*" (change)="onFileSelected($event)" />
-<div *ngIf="selectedFileName()">
-  <p><strong>Selected File:</strong> {{ selectedFileName() }}</p>
+<button (click)="onUpload()" [disabled]="!selectedFile()">Extract Text</button>
+
+<div *ngIf="isLoading()">
+  <p>Processing...</p>
 </div>
-<button (click)="onUpload()" [disabled]="!selectedFile()">Upload</button>
-<div *ngIf="responseMessage()">
-  <p><strong>Response:</strong> {{ responseMessage() }}</p>
-</div>
+
+<textarea *ngIf="responseMessage()"
+  [value]="responseMessage()"
+  rows="20"
+  cols="80" readonly>
+
+</textarea>

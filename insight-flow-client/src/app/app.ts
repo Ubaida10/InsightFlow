@@ -9,12 +9,14 @@ import {UploadService} from './services/upload-service/upload-service';
   selector: 'app-root',
   imports: [RouterOutlet, NgIf],
   templateUrl: './app.html',
+  standalone: true,
   styleUrl: './app.css'
 })
 export class App {
   selectedFile = signal<File | null>(null);
   selectedFileName = signal<string>('');
   responseMessage = signal<String>('');
+  isLoading = signal<boolean>(false);
 
   constructor(private uploadService: UploadService) {}
 
@@ -32,9 +34,17 @@ export class App {
 
     if(!file) return;
 
+    this.isLoading.set(true);
+
     this.uploadService.uploadFile(file).subscribe({
-      next: (res) => {this.responseMessage.set(res)},
-      error: (err) => {this.responseMessage.set(`Error: ${err.message}`)}
+      next: (response)=>{
+        this.responseMessage.set(response);
+        this.isLoading.set(false);
+      },
+      error: (error) => {
+        this.responseMessage.set('Failed' + error.message);
+        this.isLoading.set(false);
+      }
     });
   }
 }
