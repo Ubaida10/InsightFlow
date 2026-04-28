@@ -1,0 +1,12 @@
+<div class="tooltip-panel" [class.visible]="visible()">
+  <div class="tooltip-header">
+    <mat-icon class="tooltip-icon">biotech</mat-icon>
+    <span class="tooltip-term">{{ term() }}</span>
+  </div>
+
+  <mat-spinner *ngIf="loading()" diameter="20" class="spinner" />
+
+  <p *ngIf="!loading() && explanation()" class="tooltip-body">
+    {{ explanation() }}
+  </p>
+</div>

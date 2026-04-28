@@ -5,8 +5,17 @@ import {MatCard, MatCardContent, MatCardHeader, MatCardSubtitle, MatCardTitle} f
 import {MatIcon} from '@angular/material/icon';
 import {Upload} from '../upload/upload';
 import {NgIf, TitleCasePipe} from '@angular/common';
-import {MatTable} from '@angular/material/table';
+import {
+  MatCell,
+  MatCellDef,
+  MatColumnDef,
+  MatHeaderCell,
+  MatHeaderCellDef, MatHeaderRow, MatHeaderRowDef, MatRow,
+  MatRowDef,
+  MatTable
+} from '@angular/material/table';
 import {MatTooltip} from '@angular/material/tooltip';
+import {MedicalTooltipOverlay} from '../../directives/medical-tooltip/medical-tooltip-overlay';
 
 @Component({
   selector: 'app-dashboard',
@@ -21,7 +30,17 @@ import {MatTooltip} from '@angular/material/tooltip';
     NgIf,
     MatTable,
     TitleCasePipe,
-    MatTooltip
+    MatTooltip,
+    MedicalTooltipOverlay,
+    MatRowDef,
+    MatColumnDef,
+    MatHeaderCell,
+    MatCell,
+    MatCellDef,
+    MatHeaderCellDef,
+    MatHeaderRowDef,
+    MatHeaderRow,
+    MatRow
   ],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.css',

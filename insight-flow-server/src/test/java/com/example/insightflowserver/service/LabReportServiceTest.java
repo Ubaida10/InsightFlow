@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.web.multipart.MultipartFile;
@@ -36,6 +37,7 @@ class LabReportServiceTest {
     @Mock
     private MultipartFile multipartFile;
 
+    @Spy
     @InjectMocks
     private LabReportService labReportService;
 
@@ -55,8 +57,8 @@ class LabReportServiceTest {
     @Test
     void extractAndPersist_ShouldHandleIOException() throws IOException {
         // Given
-        when(multipartFile.getOriginalFilename()).thenReturn("test.pdf");
-        when(multipartFile.getContentType()).thenReturn("application/pdf");
+        lenient().when(multipartFile.getOriginalFilename()).thenReturn("test.pdf");
+        lenient().when(multipartFile.getContentType()).thenReturn("application/pdf");
         when(multipartFile.getBytes()).thenThrow(new IOException("File read error"));
 
         // When & Then
@@ -70,10 +72,13 @@ class LabReportServiceTest {
 
     @Test
     void extractAndPersist_ShouldUseDefaultUserId_WhenUserIdNotProvided() throws IOException {
-        // Given - simulate the service working by mocking repository save
-        when(multipartFile.getOriginalFilename()).thenReturn("test.pdf");
-        when(multipartFile.getContentType()).thenReturn("application/pdf");
-        when(multipartFile.getBytes()).thenReturn("sample content".getBytes());
+        // Given
+        lenient().when(multipartFile.getOriginalFilename()).thenReturn("test.pdf");
+        lenient().when(multipartFile.getContentType()).thenReturn("application/pdf");
+        lenient().when(multipartFile.getBytes()).thenReturn("sample content".getBytes());
+        
+        // Mock the extractStructureReport method to avoid API calls
+        doReturn(sampleLabReport).when(labReportService).extractStructureReport(any(byte[].class));
         when(labReportRepository.save(any(LabReport.class))).thenReturn(sampleLabReport);
 
         // When
@@ -88,9 +93,12 @@ class LabReportServiceTest {
     @Test
     void extractAndPersist_ShouldUseProvidedUserId() throws IOException {
         // Given
-        when(multipartFile.getOriginalFilename()).thenReturn("test.pdf");
-        when(multipartFile.getContentType()).thenReturn("application/pdf");
-        when(multipartFile.getBytes()).thenReturn("sample content".getBytes());
+        lenient().when(multipartFile.getOriginalFilename()).thenReturn("test.pdf");
+        lenient().when(multipartFile.getContentType()).thenReturn("application/pdf");
+        lenient().when(multipartFile.getBytes()).thenReturn("sample content".getBytes());
+        
+        // Mock the extractStructureReport method to avoid API calls
+        doReturn(sampleLabReport).when(labReportService).extractStructureReport(any(byte[].class));
         when(labReportRepository.save(any(LabReport.class))).thenReturn(sampleLabReport);
 
         // When
@@ -108,6 +116,9 @@ class LabReportServiceTest {
         lenient().when(multipartFile.getOriginalFilename()).thenReturn("test.pdf");
         lenient().when(multipartFile.getContentType()).thenReturn("application/pdf");
         lenient().when(multipartFile.getBytes()).thenReturn("sample content".getBytes());
+        
+        // Mock the extractStructureReport method to avoid API calls
+        doReturn(sampleLabReport).when(labReportService).extractStructureReport(any(byte[].class));
         when(labReportRepository.save(any(LabReport.class))).thenThrow(new RuntimeException("Database error"));
 
         // When & Then

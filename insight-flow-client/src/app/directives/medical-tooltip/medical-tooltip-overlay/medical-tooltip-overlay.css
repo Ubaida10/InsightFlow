@@ -1,0 +1,56 @@
+.tooltip-panel {
+  position: fixed;
+  z-index: 9999;
+  max-width: 320px;
+  min-width: 220px;
+  background: #1a237e;
+  color: white;
+  border-radius: 10px;
+  padding: 14px 16px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+  opacity: 0;
+  transform: translateY(6px) scale(0.97);
+  transition: opacity 0.18s ease, transform 0.18s ease;
+  pointer-events: none;
+
+  &.visible {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.tooltip-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(255,255,255,0.2);
+}
+
+.tooltip-icon {
+  font-size: 16px;
+  width: 16px;
+  height: 16px;
+  color: #90caf9;
+}
+
+.tooltip-term {
+  font-weight: 700;
+  font-size: 14px;
+  color: #90caf9;
+  letter-spacing: 0.3px;
+}
+
+.tooltip-body {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.6;
+  color: rgba(255,255,255,0.9);
+}
+
+.spinner {
+  margin: 8px auto;
+  display: block;
+  --mdc-circular-progress-active-indicator-color: white;
+}
