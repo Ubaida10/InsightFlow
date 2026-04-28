@@ -1,0 +1,152 @@
+package com.example.insightflowserver.service;
+
+import com.example.insightflowserver.constants.PromptConstants;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.ai.chat.client.ChatClient;
+import org.springframework.ai.document.Document;
+import org.springframework.ai.vectorstore.SearchRequest;
+import org.springframework.ai.vectorstore.VectorStore;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+/**
+ * Service for RAG (Retrieval-Augmented Generation) medical term explanations.
+ *
+ * This service provides semantic search and explanation functionality for medical terms.
+ * It searches the medical glossary vector store and uses Gemini AI to generate contextual
+ * explanations. If a term is not found, it leverages Gemini's medical knowledge and
+ * automatically adds it to the vector store for future queries.
+ *
+ * @author Muhammad Abu Ubaida Aljerah
+ */
+@Service
+@Slf4j
+@RequiredArgsConstructor
+public class RagService {
+
+    private final VectorStore vectorStore;
+    private final ChatClient chatClient;
+
+    /**
+     * Explains a medical term using RAG and Gemini AI.
+     *
+     * Searches the vector store for similar documents. If found, uses context-aware
+     * explanation. If not found, retrieves explanation from Gemini's medical knowledge
+     * and auto-adds the term to the vector store for future queries.
+     *
+     * API cost per request:
+     * - Cache hit (vector store): 1 embedding + 1 chat = 2 calls
+     * - Full miss: 1 embedding + 1 chat + 1 embedding (auto-add) = 3 calls (async)
+     *
+     * @param term the medical term to explain
+     * @return the explanation string for the given medical term
+     */
+    public String explainTerm(String term) {
+        log.info("Searching vector store for term: '{}'", term);
+
+        List<Document> relevant = vectorStore.similaritySearch(
+                SearchRequest.builder()
+                        .query(term)
+                        .topK(3)
+                        .similarityThreshold(0.75)
+                        .build()
+        );
+
+        log.info("Search returned {} documents for term: '{}'", relevant.size(), term);
+
+        if (relevant.isEmpty()) {
+            log.info("Term '{}' not found in vector store — using Gemini knowledge", term);
+            String explanation = explainFromGeminiKnowledge(term);
+            autoAddToGlossary(term, explanation);
+            return explanation;
+        }
+
+        log.info("Term '{}' found in vector store — using RAG context", term);
+        relevant.forEach(d -> log.info("  Matched doc: {}", d.getText().substring(0, Math.min(80, d.getText().length()))));
+
+        String context = relevant.stream()
+                .map(Document::getText)
+                .collect(Collectors.joining("\n\n"));
+
+        return explainFromContext(term, context);
+    }
+
+    /**
+     * Generates an explanation using context from vector store results.
+     *
+     * @param term    the medical term being explained
+     * @param context the relevant context from vector store search results
+     * @return the generated explanation from Gemini
+     */
+    private String explainFromContext(String term, String context) {
+        String prompt = PromptConstants.EXPLAIN_FROM_CONTEXT_PROMPT.formatted(term, term, context);
+
+        log.info("Calling Gemini with RAG context for term: '{}'", term);
+
+        String response = chatClient.prompt()
+                .user(prompt)
+                .call()
+                .content();
+
+        if (response == null || response.trim().isEmpty()) {
+            log.warn("Gemini returned empty response for context-based explanation of: '{}'", term);
+            return explainFromGeminiKnowledge(term);
+        }
+
+        return response;
+    }
+
+    /**
+     * Generates an explanation using Gemini's own medical knowledge.
+     * Used when a term is not found in the vector store.
+     *
+     * @param term the medical term to explain
+     * @return the explanation generated from Gemini's knowledge
+     */
+    private String explainFromGeminiKnowledge(String term) {
+        String prompt = PromptConstants.EXPLAIN_FROM_GEMINI_KNOWLEDGE.formatted(term);
+
+        log.info("Calling Gemini with own knowledge for term: '{}'", term);
+
+        String response = chatClient.prompt()
+                .user(prompt)
+                .call()
+                .content();
+
+        if (response == null || response.trim().isEmpty()) {
+            throw new RuntimeException("Gemini returned empty response for term: " + term);
+        }
+
+        return response;
+    }
+
+    /**
+     * Automatically adds a newly explained term to the glossary vector store.
+     * Runs asynchronously so it does not block the API response.
+     *
+     * @param term        the medical term to add
+     * @param explanation the explanation generated by Gemini
+     */
+    @Async
+    public void autoAddToGlossary(String term, String explanation) {
+        try {
+            String content = String.format("Term: %s. Definition: %s", term, explanation);
+
+            Document document = Document.builder()
+                    .text(content)
+                    .metadata("term", term)
+                    .metadata("category", "auto-generated")
+                    .metadata("normalRange", "see definition")
+                    .build();
+
+            vectorStore.add(List.of(document));
+            log.info("Auto-added '{}' to vector store for future queries", term);
+        } catch (Exception e) {
+            log.warn("Failed to auto-add '{}' to vector store: {}", term, e.getMessage());
+        }
+    }
+}

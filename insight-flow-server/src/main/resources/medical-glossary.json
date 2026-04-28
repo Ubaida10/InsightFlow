@@ -40,5 +40,203 @@
     "definition": "Thyroid Stimulating Hormone — controls how much thyroid hormone your body makes. Abnormal levels indicate thyroid issues.",
     "normalRange": "0.4 - 4.0 mIU/L",
     "category": "Thyroid"
+  },
+  {
+    "term": "Ferritin",
+    "definition": "A protein that stores iron in your body and shows how much iron you have saved.",
+    "normalRange": "Men: 30–300 ng/mL, Women: 15–150 ng/mL",
+    "category": "Iron Studies"
+  },
+  {
+    "term": "Vitamin D",
+    "definition": "A vitamin that helps keep your bones strong and supports your immune system.",
+    "normalRange": "20–50 ng/mL",
+    "category": "Vitamins"
+  },
+  {
+    "term": "TSH",
+    "definition": "A hormone that controls how active your thyroid gland is.",
+    "normalRange": "0.4–4.0 mIU/L",
+    "category": "Hormones"
+  },
+  {
+    "term": "T3",
+    "definition": "An active thyroid hormone that affects metabolism and energy levels.",
+    "normalRange": "80–200 ng/dL",
+    "category": "Hormones"
+  },
+  {
+    "term": "T4",
+    "definition": "A thyroid hormone that helps regulate metabolism and body functions.",
+    "normalRange": "5.0–12.0 µg/dL",
+    "category": "Hormones"
+  },
+  {
+    "term": "WBC",
+    "definition": "White blood cells that help your body fight infections.",
+    "normalRange": "4,000–11,000 cells/µL",
+    "category": "Blood Count"
+  },
+  {
+    "term": "RBC",
+    "definition": "Red blood cells that carry oxygen throughout your body.",
+    "normalRange": "Men: 4.7–6.1 million cells/µL, Women: 4.2–5.4 million cells/µL",
+    "category": "Blood Count"
+  },
+  {
+    "term": "Platelets",
+    "definition": "Cells that help your blood clot and stop bleeding.",
+    "normalRange": "150,000–450,000 cells/µL",
+    "category": "Blood Count"
+  },
+  {
+    "term": "ESR",
+    "definition": "A test that shows if there is inflammation in your body.",
+    "normalRange": "0–20 mm/hr",
+    "category": "Inflammation"
+  },
+  {
+    "term": "CRP",
+    "definition": "A protein that increases when there is inflammation or infection.",
+    "normalRange": "<1.0 mg/dL",
+    "category": "Inflammation"
+  },
+  {
+    "term": "Sodium",
+    "definition": "An electrolyte that helps control fluid balance and nerve function.",
+    "normalRange": "135–145 mmol/L",
+    "category": "Electrolytes"
+  },
+  {
+    "term": "Potassium",
+    "definition": "An electrolyte important for heart and muscle function.",
+    "normalRange": "3.5–5.0 mmol/L",
+    "category": "Electrolytes"
+  },
+  {
+    "term": "Calcium",
+    "definition": "A mineral needed for strong bones, muscles, and nerves.",
+    "normalRange": "8.6–10.2 mg/dL",
+    "category": "Electrolytes"
+  },
+  {
+    "term": "Magnesium",
+    "definition": "A mineral that supports muscle, nerve, and heart function.",
+    "normalRange": "1.7–2.2 mg/dL",
+    "category": "Electrolytes"
+  },
+  {
+    "term": "Uric Acid",
+    "definition": "A waste product that can build up and cause gout if too high.",
+    "normalRange": "Men: 3.4–7.0 mg/dL, Women: 2.4–6.0 mg/dL",
+    "category": "Metabolic"
+  },
+  {
+    "term": "BUN",
+    "definition": "A test that measures waste products in your blood to check kidney function.",
+    "normalRange": "7–20 mg/dL",
+    "category": "Kidney Function"
+  },
+  {
+    "term": "eGFR",
+    "definition": "An estimate of how well your kidneys are filtering blood.",
+    "normalRange": ">90 mL/min/1.73m²",
+    "category": "Kidney Function"
+  },
+  {
+    "term": "LDL",
+    "definition": "Often called bad cholesterol that can build up in your arteries.",
+    "normalRange": "<100 mg/dL",
+    "category": "Lipid Profile"
+  },
+  {
+    "term": "HDL",
+    "definition": "Known as good cholesterol that helps remove excess cholesterol.",
+    "normalRange": ">40 mg/dL (men), >50 mg/dL (women)",
+    "category": "Lipid Profile"
+  },
+  {
+    "term": "Triglycerides",
+    "definition": "A type of fat in your blood used for energy.",
+    "normalRange": "<150 mg/dL",
+    "category": "Lipid Profile"
+  },
+  {
+    "term": "AST",
+    "definition": "An enzyme found in the liver that rises when the liver is damaged.",
+    "normalRange": "10–40 U/L",
+    "category": "Liver Function"
+  },
+  {
+    "term": "ALT",
+    "definition": "An enzyme mainly in the liver that indicates liver health.",
+    "normalRange": "7–56 U/L",
+    "category": "Liver Function"
+  },
+  {
+    "term": "ALP",
+    "definition": "An enzyme related to liver and bone health.",
+    "normalRange": "44–147 U/L",
+    "category": "Liver Function"
+  },
+  {
+    "term": "GGT",
+    "definition": "An enzyme that helps detect liver and bile duct problems.",
+    "normalRange": "9–48 U/L",
+    "category": "Liver Function"
+  },
+  {
+    "term": "Total Protein",
+    "definition": "The total amount of protein in your blood, including albumin and globulin.",
+    "normalRange": "6.0–8.3 g/dL",
+    "category": "Liver Function"
+  },
+  {
+    "term": "Albumin",
+    "definition": "A protein made by the liver that helps keep fluid in your bloodstream.",
+    "normalRange": "3.5–5.0 g/dL",
+    "category": "Liver Function"
+  },
+  {
+    "term": "INR",
+    "definition": "A test that shows how long it takes your blood to clot.",
+    "normalRange": "0.8–1.2",
+    "category": "Coagulation"
+  },
+  {
+    "term": "PT",
+    "definition": "A test measuring how quickly your blood clots.",
+    "normalRange": "11–13.5 seconds",
+    "category": "Coagulation"
+  },
+  {
+    "term": "aPTT",
+    "definition": "A test that checks blood clotting through a different pathway.",
+    "normalRange": "25–35 seconds",
+    "category": "Coagulation"
+  },
+  {
+    "term": "HbA1c",
+    "definition": "A test that shows your average blood sugar over the past 2–3 months.",
+    "normalRange": "<5.7%",
+    "category": "Diabetes"
+  },
+  {
+    "term": "Insulin",
+    "definition": "A hormone that helps control blood sugar levels.",
+    "normalRange": "2–25 µIU/mL",
+    "category": "Hormones"
+  },
+  {
+    "term": "Cortisol",
+    "definition": "A hormone released during stress that affects metabolism and immune response.",
+    "normalRange": "6–23 µg/dL (morning)",
+    "category": "Hormones"
+  },
+  {
+    "term": "PSA",
+    "definition": "A protein produced by the prostate used to screen for prostate issues.",
+    "normalRange": "<4.0 ng/mL",
+    "category": "Cancer Screening"
   }
 ]

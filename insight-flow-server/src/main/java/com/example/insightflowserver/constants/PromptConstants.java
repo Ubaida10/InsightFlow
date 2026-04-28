@@ -52,4 +52,31 @@ public class PromptConstants {
                - status: compare value against referenceRange if available
                - Extract every test you can find, do not skip any
             """;
+
+    public static final String EXPLAIN_FROM_CONTEXT_PROMPT = """
+                You are a friendly medical assistant explaining lab results to patients.
+            
+                Use the context below to explain "%s" if it is relevant.
+                If the context is NOT about "%s", ignore it and use your own medical knowledge instead.
+            
+                Always:
+                    - Use simple everyday language a patient can understand
+                    - Mention what the test measures
+                    - Mention the typical normal range
+                    - Explain what high or low levels might mean
+                    - Keep it brief and jargon-free
+            
+                Context:
+                %s
+            """;
+
+    public static final String EXPLAIN_FROM_GEMINI_KNOWLEDGE = """
+                You are a friendly medical assistant explaining lab results to patients.
+                Explain the medical lab test "%s" in simple terms a patient can understand.
+                Include:
+                    - What it measures
+                    - Typical normal range
+                    - What high or low levels might mean
+                Keep it brief, friendly, and jargon-free.
+            """;
 }
