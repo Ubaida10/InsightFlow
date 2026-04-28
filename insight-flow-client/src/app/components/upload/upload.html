@@ -1,0 +1,47 @@
+<!-- upload/upload.component.html -->
+<div class="upload-container">
+  <div
+    class="drop-zone"
+    [class.drag-over]="isDragOver()"
+    [class.has-file]="selectedFile()"
+    (dragover)="onDragOver($event)"
+    (dragleave)="onDragLeave()"
+    (drop)="onDrop($event)"
+  >
+    <mat-icon class="upload-icon">
+      {{ selectedFile() ? 'description' : 'cloud_upload' }}
+    </mat-icon>
+
+    <p class="drop-text" *ngIf="!selectedFile()">
+      Drag & drop your lab report here
+    </p>
+    <p class="file-name" *ngIf="selectedFile()">
+      {{ selectedFile()!.name }}
+    </p>
+
+    <input
+      type="file"
+      #fileInput
+      accept=".pdf,image/*"
+      (change)="onFileSelected($event)"
+      style="display:none"
+    />
+
+    <button mat-stroked-button (click)="fileInput.click()" [disabled]="isLoading()">
+      {{ selectedFile() ? 'Change File' : 'Browse Files' }}
+    </button>
+  </div>
+
+  <mat-progress-bar *ngIf="isLoading()" mode="indeterminate" />
+
+  <button
+    mat-raised-button
+    color="primary"
+    class="analyze-btn"
+    [disabled]="!selectedFile() || isLoading()"
+    (click)="onUpload()"
+  >
+    <mat-icon>biotech</mat-icon>
+    {{ isLoading() ? 'Analyzing...' : 'Analyze Report' }}
+  </button>
+</div>

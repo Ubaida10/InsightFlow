@@ -44,4 +44,7 @@ public class LabReport {
 
     /** List of individual lab test results extracted from the report */
     private List<LabResult> results;
+
+    private String disclaimer;
+    private LocalDateTime analyzedAt;
 }

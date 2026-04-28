@@ -1,13 +1,1 @@
-<input type="file" accept=".pdf, image/*" (change)="onFileSelected($event)" />
-<button (click)="onUpload()" [disabled]="!selectedFile()">Extract Text</button>
-
-<div *ngIf="isLoading()">
-  <p>Processing...</p>
-</div>
-
-<textarea *ngIf="responseMessage()"
-  [value]="responseMessage()"
-  rows="20"
-  cols="80" readonly>
-
-</textarea>
+<app-dashboard />

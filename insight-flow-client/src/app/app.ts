@@ -1,50 +1,12 @@
-import { Component, signal, inject } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
-import { environment } from '../environments/environment';
-import {NgIf} from '@angular/common';
-import {UploadService} from './services/upload-service/upload-service';
+import { Component } from '@angular/core';
+
+import {Dashboard} from './components/dashboard/dashboard';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, NgIf],
+  imports: [Dashboard],
   templateUrl: './app.html',
   standalone: true,
   styleUrl: './app.css'
 })
-export class App {
-  selectedFile = signal<File | null>(null);
-  selectedFileName = signal<string>('');
-  responseMessage = signal<String>('');
-  isLoading = signal<boolean>(false);
-
-  constructor(private uploadService: UploadService) {}
-
-  onFileSelected(event: Event) {
-    const input = event.target as HTMLInputElement;
-    if (input.files && input.files.length > 0) {
-      const file = input.files[0];
-      this.selectedFile.set(file);
-      this.selectedFileName.set(file.name);
-    }
-  }
-
-  onUpload() {
-    const file = this.selectedFile();
-
-    if(!file) return;
-
-    this.isLoading.set(true);
-
-    this.uploadService.uploadFile(file).subscribe({
-      next: (response)=>{
-        this.responseMessage.set(response);
-        this.isLoading.set(false);
-      },
-      error: (error) => {
-        this.responseMessage.set('Failed' + error.message);
-        this.isLoading.set(false);
-      }
-    });
-  }
-}
+export class App {}

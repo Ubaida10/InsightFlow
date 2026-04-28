@@ -32,4 +32,9 @@ public class LabResult {
 
     /** Status interpretation of the result */
     private String status;
+
+    private String colorCode;
+    private String urgencyLevel;
+    private boolean flagged;
+    private String flagReason;
 }

@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import {environment} from '../../../environments/environment';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
+import {LabReport} from '../../models/lab-report.model';
 
 @Injectable({
   providedIn: 'root',
@@ -11,9 +12,10 @@ export class UploadService {
 
   constructor(private http: HttpClient) {}
 
-  uploadFile(file: File):Observable<String> {
+  uploadFile(file: File, userId: string = 'anonymous'):Observable<LabReport> {
     const formData = new FormData();
     formData.append('file', file);
-    return this.http.post(this.apiUrl, formData, {responseType: 'text'});
+    formData.append('userId', userId);
+    return this.http.post<LabReport>(this.apiUrl, formData);
   }
 }

@@ -52,7 +52,7 @@ public class RagService {
                 SearchRequest.builder()
                         .query(term)
                         .topK(3)
-                        .similarityThreshold(0.75)
+                        .similarityThreshold(0.85)
                         .build()
         );
 

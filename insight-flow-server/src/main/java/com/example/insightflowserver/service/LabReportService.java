@@ -37,6 +37,8 @@ public class LabReportService {
     /** Repository for lab report database operations */
     private final LabReportRepository labReportRepository;
 
+    private final SafetyShieldService safetyShieldService;
+
     /** Google Gemini API key for AI-powered OCR */
     @Value("${gemini.api-key}")
     private String apiKey;
@@ -58,15 +60,18 @@ public class LabReportService {
      * @throws IOException if file reading or processing fails
      */
     public LabReport extractAndPersist(MultipartFile file, String userId) throws IOException {
-        // 1. Extract structured data
+        // 1. Extract structured data using Gemini
         LabReport report = extractStructureReport(file);
 
-        // 2. Enrich with metadata
+        //2. Apply safety shield
+        report = safetyShieldService.applyShield(report);
+
+        // 3. Enrich with metadata
         report.setUserId(userId);
         report.setOriginalFileName(file.getOriginalFilename());
         report.setUploadedAt(LocalDateTime.now());
 
-        // 3. Persist to MongoDB
+        // 4. Persist to MongoDB
         try {
             LabReport reportSaved = labReportRepository.save(report);
             log.info("Persisted lab report with id: {}", reportSaved.getId());

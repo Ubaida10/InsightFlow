@@ -1,0 +1,174 @@
+<!-- dashboard/dashboard.component.html -->
+<div class="dashboard-wrapper">
+
+  <!-- Header -->
+  <header class="dashboard-header">
+    <div class="header-content">
+      <mat-icon class="logo-icon">biotech</mat-icon>
+      <div>
+        <h1 class="app-title">InsightFlow</h1>
+        <p class="app-subtitle">Medical Lab Result Simplifier</p>
+      </div>
+    </div>
+  </header>
+
+  <div class="dashboard-body">
+
+    <!-- Upload Card -->
+    <mat-card class="upload-card">
+      <mat-card-header>
+        <mat-icon mat-card-avatar>upload_file</mat-icon>
+        <mat-card-title>Upload Lab Report</mat-card-title>
+        <mat-card-subtitle>Supports PDF and image formats</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <app-upload (reportReady)="onReportReady($event)" />
+      </mat-card-content>
+    </mat-card>
+
+    <!-- Results Section -->
+    <div class="results-section" *ngIf="report()">
+
+      <!-- Patient Info Card -->
+      <mat-card class="patient-card">
+        <mat-card-content>
+          <div class="patient-info">
+            <div class="patient-detail">
+              <mat-icon>person</mat-icon>
+              <div>
+                <span class="label">Patient</span>
+                <span class="value">{{ report()!.patientName ?? 'Unknown' }}</span>
+              </div>
+            </div>
+            <div class="patient-detail">
+              <mat-icon>calendar_today</mat-icon>
+              <div>
+                <span class="label">Report Date</span>
+                <span class="value">{{ report()!.reportDate ?? 'N/A' }}</span>
+              </div>
+            </div>
+            <div class="patient-detail">
+              <mat-icon>description</mat-icon>
+              <div>
+                <span class="label">File</span>
+                <span class="value">{{ report()!.originalFileName }}</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Summary Badges -->
+          <div class="summary-badges">
+            <div class="badge badge-total">
+              <span class="badge-count">{{ report()!.results.length }}</span>
+              <span class="badge-label">Total Tests</span>
+            </div>
+            <div class="badge badge-normal">
+              <span class="badge-count">{{ normalResults.length }}</span>
+              <span class="badge-label">Normal</span>
+            </div>
+            <div class="badge badge-flagged">
+              <span class="badge-count">{{ flaggedResults.length }}</span>
+              <span class="badge-label">Flagged</span>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+      <!-- Results Table -->
+      <mat-card class="results-card">
+        <mat-card-header>
+          <mat-icon mat-card-avatar>science</mat-icon>
+          <mat-card-title>Test Results</mat-card-title>
+          <mat-card-subtitle>
+            {{ flaggedResults.length }} result(s) require attention
+          </mat-card-subtitle>
+        </mat-card-header>
+
+        <mat-card-content>
+          <div class="table-container">
+            <table mat-table [dataSource]="report()!.results" class="results-table">
+
+              <!-- Test Name -->
+              <ng-container matColumnDef="test">
+                <th mat-header-cell *matHeaderCellDef>Test</th>
+                <td mat-cell *matCellDef="let row">
+                  <span class="test-name">{{ row.test }}</span>
+                </td>
+              </ng-container>
+
+              <!-- Value -->
+              <ng-container matColumnDef="value">
+                <th mat-header-cell *matHeaderCellDef>Value</th>
+                <td mat-cell *matCellDef="let row">
+                  <span class="value-cell" [class]="getStatusClass(row)">
+                    {{ row.value }} <small>{{ row.unit }}</small>
+                  </span>
+                </td>
+              </ng-container>
+
+              <!-- Reference Range -->
+              <ng-container matColumnDef="referenceRange">
+                <th mat-header-cell *matHeaderCellDef>Reference Range</th>
+                <td mat-cell *matCellDef="let row">
+                  <span class="range-text">{{ row.referenceRange ?? '—' }}</span>
+                </td>
+              </ng-container>
+
+              <!-- Status Badge -->
+              <ng-container matColumnDef="status">
+                <th mat-header-cell *matHeaderCellDef>Status</th>
+                <td mat-cell *matCellDef="let row">
+                  <span class="status-badge" [class]="'badge-' + getStatusClass(row)">
+                    <mat-icon class="badge-icon">{{ getStatusIcon(row) }}</mat-icon>
+                    {{ row.status | titlecase }}
+                  </span>
+                </td>
+              </ng-container>
+
+              <!-- Urgency -->
+              <ng-container matColumnDef="urgency">
+                <th mat-header-cell *matHeaderCellDef>Urgency</th>
+                <td mat-cell *matCellDef="let row">
+                  <span class="urgency-chip" [class]="getUrgencyClass(row.urgencyLevel)">
+                    {{ row.urgencyLevel }}
+                  </span>
+                </td>
+              </ng-container>
+
+              <!-- Flag -->
+              <ng-container matColumnDef="flag">
+                <th mat-header-cell *matHeaderCellDef>Details</th>
+                <td mat-cell *matCellDef="let row">
+                  <mat-icon
+                    *ngIf="row.flagged"
+                    class="flag-icon"
+                    [matTooltip]="row.flagReason"
+                    matTooltipPosition="left"
+                  >
+                    flag
+                  </mat-icon>
+                  <span *ngIf="!row.flagged" class="no-flag">—</span>
+                </td>
+              </ng-container>
+
+              <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumns;"
+                  [class.flagged-row]="row.flagged"></tr>
+            </table>
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+      <!-- Disclaimer Card -->
+      <mat-card class="disclaimer-card">
+        <mat-card-content>
+          <div class="disclaimer-content">
+            <mat-icon class="disclaimer-icon">info</mat-icon>
+            <p class="disclaimer-text">{{ report()!.disclaimer }}</p>
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+    </div>
+  </div>
+</div>
