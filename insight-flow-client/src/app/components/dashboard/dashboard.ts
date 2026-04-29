@@ -16,6 +16,7 @@ import {
 } from '@angular/material/table';
 import {MatTooltip} from '@angular/material/tooltip';
 import {MedicalTooltipOverlay} from '../../directives/medical-tooltip/medical-tooltip-overlay';
+import {TrendChart} from '../trend-chart/trend-chart';
 
 @Component({
   selector: 'app-dashboard',
@@ -40,7 +41,8 @@ import {MedicalTooltipOverlay} from '../../directives/medical-tooltip/medical-to
     MatHeaderCellDef,
     MatHeaderRowDef,
     MatHeaderRow,
-    MatRow
+    MatRow,
+    TrendChart
   ],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.css',

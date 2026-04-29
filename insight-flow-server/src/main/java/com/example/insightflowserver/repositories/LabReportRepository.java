@@ -33,5 +33,5 @@ public interface LabReportRepository extends MongoRepository<LabReport,String> {
      * @param userId the unique identifier of the user
      * @return a list of lab reports sorted by upload date (newest first)
      */
-    List<LabReport> findByUserIdOrderByUploadedAtDesc(String userId);
+    List<LabReport> findByUserIdOrderByUploadedAtAsc(String userId);
 }
