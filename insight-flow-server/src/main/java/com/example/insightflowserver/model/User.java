@@ -1,6 +1,7 @@
 package com.example.insightflowserver.model;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
@@ -20,6 +21,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class User {
 
     /** Unique identifier for the user document */
@@ -32,6 +34,8 @@ public class User {
 
     /** Hashed password for user authentication */
     private String passwordHash;
+
+    private String fullName;
 
     /** Timestamp when the user account was created */
     private String createdAt;

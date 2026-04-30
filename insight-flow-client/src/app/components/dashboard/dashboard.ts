@@ -16,7 +16,8 @@ import {
 } from '@angular/material/table';
 import {MatTooltip} from '@angular/material/tooltip';
 import {MedicalTooltipOverlay} from '../../directives/medical-tooltip/medical-tooltip-overlay';
-import {TrendChart} from '../trend-chart/trend-chart';
+import {AuthService} from '../../services/auth-service/auth-service';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-dashboard',
@@ -41,8 +42,7 @@ import {TrendChart} from '../trend-chart/trend-chart';
     MatHeaderCellDef,
     MatHeaderRowDef,
     MatHeaderRow,
-    MatRow,
-    TrendChart
+    MatRow
   ],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.css',
@@ -51,6 +51,8 @@ export class Dashboard {
   report = signal<LabReport | null>(null);
 
   displayedColumns = ['test', 'value', 'referenceRange', 'status', 'urgency', 'flag'];
+
+  constructor(public authService: AuthService, private router: Router) {}
 
   onReportReady(report: LabReport) {
     this.report.set(report);
@@ -81,5 +83,9 @@ export class Dashboard {
       'ROUTINE': 'urgency-routine'
     };
     return map[level] ?? 'urgency-routine';
+  }
+
+  trackTest(testName: string) {
+    this.router.navigate(['/trends', testName]);
   }
 }

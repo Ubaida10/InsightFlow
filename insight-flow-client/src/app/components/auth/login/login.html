@@ -1,0 +1,47 @@
+<div class="auth-wrapper">
+  <mat-card class="auth-card">
+    <mat-card-header>
+      <div class="auth-header">
+        <mat-icon class="auth-logo">biotech</mat-icon>
+        <h1 class="auth-title">InsightFlow</h1>
+        <p class="auth-subtitle">Sign in to your account</p>
+      </div>
+    </mat-card-header>
+
+    <mat-card-content>
+      <mat-progress-bar *ngIf="isLoading()" mode="indeterminate" />
+
+      <div class="error-banner" *ngIf="errorMessage()">
+        <mat-icon>error</mat-icon>
+        {{ errorMessage() }}
+      </div>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Email</mat-label>
+        <input matInput type="email" [(ngModel)]="email" placeholder="you@email.com" />
+        <mat-icon matPrefix>email</mat-icon>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Password</mat-label>
+        <input matInput
+               [type]="hidePassword() ? 'password' : 'text'"
+               [(ngModel)]="password" />
+        <mat-icon matPrefix>lock</mat-icon>
+        <button mat-icon-button matSuffix
+                (click)="hidePassword.set(!hidePassword())">
+          <mat-icon>{{ hidePassword() ? 'visibility' : 'visibility_off' }}</mat-icon>
+        </button>
+      </mat-form-field>
+
+      <button mat-raised-button color="primary" class="full-width submit-btn"
+              [disabled]="isLoading()" (click)="onLogin()">
+        Sign In
+      </button>
+
+      <p class="auth-link">
+        Don't have an account? <a routerLink="/register">Register</a>
+      </p>
+    </mat-card-content>
+  </mat-card>
+</div>

@@ -7,9 +7,11 @@ import com.example.insightflowserver.repositories.LabReportRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @RestController
@@ -22,7 +24,8 @@ public class TrendController {
     @GetMapping("/{testName}")
     public ResponseEntity<List<TrendPoint>> getTrend(
             @PathVariable String testName,
-            @RequestParam (defaultValue = "anonymous") String userId){
+            Authentication authentication) {
+        String userId = (String) authentication.getPrincipal();
         List<LabReport> reports = labReportRepository.findByUserId(userId);
         List<TrendPoint> trendPoints = reports.stream()
                 .flatMap(report -> report.getResults().stream()
@@ -44,6 +47,7 @@ public class TrendController {
 
     }
 
+    @GetMapping("/available-tests")
     public ResponseEntity<List<String>> getAvailableTests(
             @RequestParam (defaultValue = "anonymous") String userId) {
         List<LabReport> reports = labReportRepository.findByUserId(userId);

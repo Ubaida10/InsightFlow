@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -44,10 +45,10 @@ public class UploadController {
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<LabReport> uploadFile(
             @RequestParam("file") MultipartFile file,
-            @RequestParam(value = "userId", defaultValue = "anonymous") String userId) {
+            Authentication authentication) {
         try {
-            log.info("Received file: {}", file.getOriginalFilename());
-            LabReport report = labReportService.extractAndPersist(file,  userId);
+            String userId = (String) authentication.getPrincipal(); // JWT subject = userId
+            LabReport report = labReportService.extractAndPersist(file, userId);
             return ResponseEntity.ok(report);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().build();

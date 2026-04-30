@@ -1,0 +1,60 @@
+<!-- auth/register/register.component.html -->
+<div class="auth-wrapper">
+  <mat-card class="auth-card">
+    <mat-card-header>
+      <div class="auth-header">
+        <mat-icon class="auth-logo">biotech</mat-icon>
+        <h1 class="auth-title">Create Account</h1>
+        <p class="auth-subtitle">Join InsightFlow today</p>
+      </div>
+    </mat-card-header>
+
+    <mat-card-content>
+      <mat-progress-bar *ngIf="isLoading()" mode="indeterminate" />
+
+      <div class="error-banner" *ngIf="errorMessage()">
+        <mat-icon>error</mat-icon>
+        {{ errorMessage() }}
+      </div>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Full Name</mat-label>
+        <input matInput [(ngModel)]="fullName" placeholder="John Doe" />
+        <mat-icon matPrefix>person</mat-icon>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Email</mat-label>
+        <input matInput type="email" [(ngModel)]="email" />
+        <mat-icon matPrefix>email</mat-icon>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Password</mat-label>
+        <input matInput
+               [type]="hidePassword() ? 'password' : 'text'"
+               [(ngModel)]="password" />
+        <mat-icon matPrefix>lock</mat-icon>
+        <button mat-icon-button matSuffix
+                (click)="hidePassword.set(!hidePassword())">
+          <mat-icon>{{ hidePassword() ? 'visibility' : 'visibility_off' }}</mat-icon>
+        </button>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Confirm Password</mat-label>
+        <input matInput type="password" [(ngModel)]="confirmPassword" />
+        <mat-icon matPrefix>lock_outline</mat-icon>
+      </mat-form-field>
+
+      <button mat-raised-button color="primary" class="full-width submit-btn"
+              [disabled]="isLoading()" (click)="onRegister()">
+        Create Account
+      </button>
+
+      <p class="auth-link">
+        Already have an account? <a routerLink="/login">Sign In</a>
+      </p>
+    </mat-card-content>
+  </mat-card>
+</div>

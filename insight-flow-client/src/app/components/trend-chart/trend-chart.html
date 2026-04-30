@@ -1,81 +1,93 @@
-<!-- trend-chart/trend-chart.component.html -->
-<mat-card class="trend-card">
-  <mat-card-header>
-    <mat-icon mat-card-avatar>show_chart</mat-icon>
-    <mat-card-title>Trend Analysis</mat-card-title>
-    <mat-card-subtitle>Track how your results change over time</mat-card-subtitle>
-  </mat-card-header>
+<div class="trend-page-wrapper">
 
-  <mat-card-content>
-
-    <!-- Test Selector -->
-    <mat-form-field appearance="outline" class="test-selector">
-      <mat-label>Select Test</mat-label>
-      <mat-select
-        [value]="selectedTest()"
-        (selectionChange)="onTestChange($event.value)">
-        <mat-option *ngFor="let test of availableTests()" [value]="test">
-          {{ test }}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
-
-    <!-- Loading -->
-    <div class="centered" *ngIf="isLoading()">
-      <mat-spinner diameter="40" />
-      <p>Loading trend data...</p>
-    </div>
-
-    <!-- Error -->
-    <div class="error-state" *ngIf="errorMessage()">
-      <mat-icon>error_outline</mat-icon>
-      <p>{{ errorMessage() }}</p>
-    </div>
-
-    <!-- No Data -->
-    <div class="empty-state" *ngIf="!isLoading() && !hasData() && !errorMessage()">
-      <mat-icon>bar_chart</mat-icon>
-      <p>Upload multiple reports to see trends for <strong>{{ selectedTest() }}</strong></p>
-    </div>
-
-    <!-- Stats Row -->
-    <div class="stats-row" *ngIf="hasData() && !isLoading()">
-      <div class="stat-item">
-        <span class="stat-label">Latest</span>
-        <span class="stat-value" [class]="getStatusClass(latestValue()!.colorCode)">
-          {{ latestValue()!.value }} {{ latestValue()!.unit }}
-        </span>
+  <!-- Same header as dashboard -->
+  <header class="dashboard-header">
+    <div class="header-content">
+      <mat-icon class="logo-icon">biotech</mat-icon>
+      <div class="header-text">
+        <h1 class="app-title">InsightFlow</h1>
+        <p class="app-subtitle">Medical Lab Result Simplifier</p>
       </div>
-      <div class="stat-item">
-        <span class="stat-label">Highest</span>
-        <span class="stat-value status-red">
-          {{ highestValue()!.value }} {{ highestValue()!.unit }}
+      <div class="header-actions">
+        <span class="user-name">
+          <mat-icon>account_circle</mat-icon>
+          {{ authService.currentUser()?.fullName }}
         </span>
-      </div>
-      <div class="stat-item">
-        <span class="stat-label">Lowest</span>
-        <span class="stat-value status-green">
-          {{ lowestValue()!.value }} {{ lowestValue()!.unit }}
-        </span>
-      </div>
-      <div class="stat-item">
-        <span class="stat-label">Overall Trend</span>
-        <span class="stat-value trend-indicator" [class]="getTrendClass()">
-          <mat-icon class="trend-icon">{{ getTrendIcon() }}</mat-icon>
-          {{ trend() | titlecase }}
-        </span>
+        <button mat-stroked-button (click)="goBack()" class="logout-btn">
+          <mat-icon>arrow_back</mat-icon>
+          Back to Dashboard
+        </button>
       </div>
     </div>
+  </header>
 
-    <!-- Chart -->
-    <div class="chart-container" *ngIf="hasData() && !isLoading()">
-      <canvas #chartCanvas></canvas>
-    </div>
+  <div class="trend-body">
+    <mat-card class="trend-card">
+      <mat-card-header>
+        <mat-icon mat-card-avatar>show_chart</mat-icon>
+        <mat-card-title>{{ selectedTest() }}</mat-card-title>
+        <mat-card-subtitle>Trend across all your uploaded reports</mat-card-subtitle>
+      </mat-card-header>
 
-    <!-- Data Points Count -->
-    <p class="data-points-label" *ngIf="hasData() && !isLoading()">
-      Based on {{ trendData().length }} upload(s)
-    </p>
+      <mat-card-content>
 
-  </mat-card-content>
-</mat-card>
+        <!-- Loading -->
+        <div class="centered" *ngIf="isLoading()">
+          <mat-spinner diameter="40"></mat-spinner>
+          <p>Loading trend data...</p>
+        </div>
+
+        <!-- Error -->
+        <div class="error-state" *ngIf="errorMessage()">
+          <mat-icon>error_outline</mat-icon>
+          <p>{{ errorMessage() }}</p>
+        </div>
+
+        <!-- No Data -->
+        <div class="empty-state" *ngIf="!isLoading() && !hasData() && !errorMessage()">
+          <mat-icon>bar_chart</mat-icon>
+          <p>Upload multiple reports to see trends for <strong>{{ selectedTest() }}</strong></p>
+        </div>
+
+        <!-- Stats Row -->
+        <div class="stats-row" *ngIf="hasData() && !isLoading()">
+          <div class="stat-item">
+            <span class="stat-label">Latest</span>
+            <span class="stat-value" [class]="getStatusClass(latestValue()!.colorCode)">
+              {{ latestValue()!.value }} {{ latestValue()!.unit }}
+            </span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-label">Highest</span>
+            <span class="stat-value status-red">
+              {{ highestValue()!.value }} {{ highestValue()!.unit }}
+            </span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-label">Lowest</span>
+            <span class="stat-value status-green">
+              {{ lowestValue()!.value }} {{ lowestValue()!.unit }}
+            </span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-label">Overall Trend</span>
+            <span class="stat-value" [class]="getTrendClass()">
+              <mat-icon class="trend-icon">{{ getTrendIcon() }}</mat-icon>
+              {{ trend() | titlecase }}
+            </span>
+          </div>
+        </div>
+
+        <!-- Chart -->
+        <div class="chart-container" [style.display]="hasData() && !isLoading() ? 'block' : 'none'">
+          <canvas #chartCanvas></canvas>
+        </div>
+
+        <p class="data-points-label" *ngIf="hasData() && !isLoading()">
+          Based on {{ trendData().length }} upload(s)
+        </p>
+
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

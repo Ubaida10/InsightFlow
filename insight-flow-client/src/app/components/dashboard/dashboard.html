@@ -1,13 +1,22 @@
-<!-- dashboard/dashboard.component.html -->
 <div class="dashboard-wrapper">
 
   <!-- Header -->
   <header class="dashboard-header">
     <div class="header-content">
       <mat-icon class="logo-icon">biotech</mat-icon>
-      <div>
+      <div class="header-text">
         <h1 class="app-title">InsightFlow</h1>
         <p class="app-subtitle">Medical Lab Result Simplifier</p>
+      </div>
+      <div class="header-actions">
+      <span class="user-name">
+        <mat-icon>account_circle</mat-icon>
+        {{ authService.currentUser()?.fullName }}
+      </span>
+        <button mat-stroked-button (click)="authService.logout()" class="logout-btn">
+          <mat-icon>logout</mat-icon>
+          Sign Out
+        </button>
       </div>
     </div>
   </header>
@@ -98,6 +107,10 @@
                     [medicalTooltip]="row.test">   <!-- ✅ attach directive -->
                   {{ row.test }}
                   </span>
+                  <button class="track-btn" (click)="trackTest(row.test)">
+                    <mat-icon>trending_up</mat-icon>
+                    Track
+                  </button>
                 </td>
               </ng-container>
 
@@ -173,9 +186,6 @@
           </div>
         </mat-card-content>
       </mat-card>
-
     </div>
-
-    <app-trend-chart *ngIf="report()" />
   </div>
 </div>
